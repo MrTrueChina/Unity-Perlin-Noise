@@ -33,13 +33,6 @@ public class OneDimensionalPerlinNoiseDisplay : MonoBehaviour
             float perlinXPos = originXPos + _offset;
             float perlinValue = OneDimensionalPerlinNoiseGenerator.GetSinglePerlinValue(_seed, perlinXPos, _scale);
             positions[i] = new Vector3(originXPos, perlinValue, 0) + transform.position;
-
-            /*
-            float originXPos = _long / _steps * i;
-            float perlinXPos = originXPos * _scale + _offset * _scale / 2;
-            float perlinValue = OneDimensionalPerlinNoiseGenerator.GetSinglePerlinValue(_seed, perlinXPos);
-            positions[i] = new Vector3(originXPos, perlinValue, 0);
-            */
         }
 
         for (int i = 0; i < positions.Length - 1; i++)
