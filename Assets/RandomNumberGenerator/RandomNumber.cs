@@ -20,6 +20,10 @@ public static class RandomNumber
 
     /*
      *  种子 + x坐标，适用于1维柏林噪声的随机数发生器
+     *  
+     *  目标是种子更换的时候图像会发生明显变化
+     *  
+     *  各种常数和计算都是乱写 + 对着图像修修改改弄出来的，主要是修改
      */
     public static float GetFloat(int seed, int x)
     {
