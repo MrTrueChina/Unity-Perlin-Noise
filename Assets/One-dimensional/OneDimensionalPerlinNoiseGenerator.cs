@@ -14,6 +14,19 @@ public static class OneDimensionalPerlinNoiseGenerator
     }
 
     /*
+     *  重点在于柏林噪声的连续性，既是连续的同时又是不重复的，至少不能明显看出来重复
+     *  
+     *  需要考虑偏移和缩放，先缩放后偏移
+     */
+
+    public static float GetSinglePerlinValue(int seed, float originPos, float scale)
+    {
+        float xPos = originPos * scale;
+
+        return GetSinglePerlinValue(seed, xPos);
+    }
+
+    /*
      *  先解决单个值的
      *  之后是单个线的
      *  之后是多个线的
