@@ -2,15 +2,82 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OneDimensionalPerlinNoiseDisplay : MonoBehaviour {
+public class OneDimensionalPerlinNoiseDisplay : MonoBehaviour
+{
+    [SerializeField]
+    int _seed;
+    [SerializeField]
+    float _long = 3;
+    [SerializeField]
+    int _steps = 100;
+    [SerializeField]
+    float _offset;
+    [SerializeField]
+    float _scale = 1;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    private void OnDrawGizmos()
+    {
+        DrawPerlinNoise();
+    }
+
+    void DrawPerlinNoise()
+    {
+        Gizmos.color = Color.black;
+
+        Vector3[] positions = new Vector3[_steps];
+        for (int i = 0; i < _steps; i++)
+        {
+            float originXPos = _long / _steps * i;
+            float perlinXPos = originXPos * _scale + _offset * _scale / 2;
+            float perlinValue = OneDimensionalPerlinNoiseGenerator.GetSinglePerlinValue(_seed, perlinXPos);
+            positions[i] = new Vector3(originXPos, perlinValue, 0);
+        }
+
+        for (int i = 0; i < positions.Length - 1; i++)
+            Gizmos.DrawLine(positions[i], positions[i + 1]);
+    }
+
+
+    private void OnValidate()
+    {
+        if (_scale < 0.01f) _scale = 0.01f;
+        if (_steps > 1000) _steps = 1000;
+        if (_long <= 0) _long = 0;
+    }
+
+
+
+    //下面是测试阶段的代码，留下来好做测试用
+    void DrawCos()
+    {
+        Gizmos.color = Color.red;
+
+        Vector3[] positions = new Vector3[_steps];
+        for (int i = 0; i < _steps; i++)
+        {
+            float x = _long / _steps * i;
+            float cosValue = Mathf.Cos(x);
+            positions[i] = new Vector3(x, cosValue, 0);
+        }
+
+        for (int i = 0; i < positions.Length - 1; i++)
+            Gizmos.DrawLine(positions[i], positions[i + 1]);
+    }
+
+    void DrawSin()
+    {
+        Gizmos.color = Color.blue;
+
+        Vector3[] positions = new Vector3[_steps];
+        for (int i = 0; i < _steps; i++)
+        {
+            float x = _long / _steps * i;
+            float sinValue = Mathf.Sin(x);
+            positions[i] = new Vector3(x, sinValue, 0);
+        }
+
+        for (int i = 0; i < positions.Length - 1; i++)
+            Gizmos.DrawLine(positions[i], positions[i + 1]);
+    }
 }
