@@ -4,19 +4,57 @@ using UnityEngine;
 
 public static class OneDimensionalPerlinNoiseGenerator
 {
-    //octaves：倍频    persistence：持续度    lacunarity：隙度
-    public static float GetPerlinValue(int seed, float xPos, float scale, int octaves, float persistence, float lacunarity)
+    /*
+     *  octaves：倍频，就是多少个柏林噪声混合出最终噪声
+     *  persistence：持续度，后续噪声对最终噪声的效果影响，持续度越大后续噪声的影响就越大，应该是在0-1，超过1会导致噪声最大值超出1，小于0则会降低噪声甚至降到负数
+     *  lacunarity：隙度，可能是和缩放类似的值，这个值影响到后续噪声的缩放值，越靠后影响越大
+     */
+    public static float GetPerlinValue(int seed, float originPos, float scale, int octaves, float persistence, float lacunarity)
     {
-        float amplitude = 1;        //振幅
-        float frequency = 1;        //频率
+        persistence = Mathf.Clamp(persistence, 0, 1);
 
-        return 0;
+        float perlinValue = 0;
+        float totalAmplitude = 0;
+        for (int i = 0; i < octaves; i++)
+        {
+            int currentSeed = RandomNumber.GetInt(seed, i);
+
+            float amplitude = Mathf.Pow(persistence, i);    //当前循环的振幅，或者说当前循环代表的噪声的振幅
+            totalAmplitude += amplitude;                    //保留下这个振幅，最后要用来把噪声限制到 0-1
+
+            float currentFrequency = Mathf.Pow(lacunarity, i);  //当前噪声的频率，应该就是一个缩放值吧
+
+            float currentPerlinValue = GetSinglePerlinValue(currentSeed, originPos, scale * currentFrequency) * amplitude;     //把频率和缩放一起丢进去看看结果
+            perlinValue += currentPerlinValue;
+        }
+
+        perlinValue /= totalAmplitude;
+
+        return perlinValue;
+    }
+
+
+    public static float GetSubPerlinValue(int seed, float originPos, float scale, float persistence, float lacunarity, int index)
+    {
+        persistence = Mathf.Clamp(persistence, 0, 1);
+
+        seed = RandomNumber.GetInt(seed, index);
+
+        float amplitude = Mathf.Pow(persistence, index);    //当前循环的振幅，或者说当前循环代表的噪声的振幅
+
+        float currentFrequency = Mathf.Pow(lacunarity, index);  //当前噪声的频率，应该就是一个缩放值吧
+
+        float perlinValue = GetSinglePerlinValue(seed, originPos, scale * currentFrequency) * amplitude;     //把频率和缩放一起丢进去看看结果
+
+        return perlinValue;
     }
 
     /*
      *  重点在于柏林噪声的连续性，既是连续的同时又是不重复的，至少不能明显看出来重复
      *  
      *  需要考虑偏移和缩放，先缩放后偏移
+     *  
+     *  看图像是连续的了
      */
 
     public static float GetSinglePerlinValue(int seed, float originPos, float scale)
