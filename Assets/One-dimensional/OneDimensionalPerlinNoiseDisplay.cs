@@ -14,11 +14,28 @@ public class OneDimensionalPerlinNoiseDisplay : MonoBehaviour
     float _offset;
     [SerializeField]
     float _scale = 1;
+    [SerializeField]
+    [Range(1, 5)]
+    int _octaves = 1;
+    [SerializeField]
+    [Range(0, 1)]
+    float _persistence;
+    [SerializeField]
+    float _lacunarity;      //这个数大小正负应该都行，但小于1会导致后续噪声越来越平坦，因为随机点距离越来越远了
+
+    [SerializeField]
+    bool _drawPerlinNoise = true;
+
+    [SerializeField]
+    bool _drawSubPerlinNoise = false;       //绘制子柏林噪声，也就是计算总柏林噪声时计算的小噪声
+    [SerializeField]
+    int _drawSubPerlinNoiseIndex;           //绘制的子噪声的下标
 
 
     private void OnDrawGizmos()
     {
-        DrawPerlinNoise();
+        if (_drawPerlinNoise) DrawPerlinNoise();
+        if (_drawSubPerlinNoise) DrawSubPerlinNoise();
     }
 
     void DrawPerlinNoise()
@@ -28,10 +45,9 @@ public class OneDimensionalPerlinNoiseDisplay : MonoBehaviour
         Vector3[] positions = new Vector3[_steps];
         for (int i = 0; i < _steps; i++)
         {
-
             float originXPos = _long / _steps * i;
             float perlinXPos = originXPos + _offset;
-            float perlinValue = OneDimensionalPerlinNoiseGenerator.GetSinglePerlinValue(_seed, perlinXPos, _scale);
+            float perlinValue = OneDimensionalPerlinNoiseGenerator.GetPerlinValue(_seed, perlinXPos, _scale, _octaves, _persistence, _lacunarity);
             positions[i] = new Vector3(originXPos, perlinValue, 0) + transform.position;
         }
 
@@ -39,14 +55,35 @@ public class OneDimensionalPerlinNoiseDisplay : MonoBehaviour
             Gizmos.DrawLine(positions[i], positions[i + 1]);
 
         float endXPos = transform.position.x + _long;
-        Vector3 endPosition = new Vector3(_long, OneDimensionalPerlinNoiseGenerator.GetSinglePerlinValue(_seed, endXPos, _scale)) + transform.position;
+        Vector3 endPosition = new Vector3(_long, OneDimensionalPerlinNoiseGenerator.GetPerlinValue(_seed, endXPos, _scale, _octaves, _persistence, _lacunarity)) + transform.position;
+        Gizmos.DrawLine(positions[positions.Length - 1], endPosition);
+    }
+
+    void DrawSubPerlinNoise()
+    {
+        Gizmos.color = Color.blue;
+
+        Vector3[] positions = new Vector3[_steps];
+        for (int i = 0; i < _steps; i++)
+        {
+
+            float originXPos = _long / _steps * i;
+            float perlinXPos = originXPos + _offset;
+            float perlinValue = OneDimensionalPerlinNoiseGenerator.GetSubPerlinValue(_seed, perlinXPos, _scale, _persistence, _lacunarity, _drawSubPerlinNoiseIndex);
+            positions[i] = new Vector3(originXPos, perlinValue, 0) + transform.position;
+        }
+
+        for (int i = 0; i < positions.Length - 1; i++)
+            Gizmos.DrawLine(positions[i], positions[i + 1]);
+
+        float endXPos = transform.position.x + _long;
+        Vector3 endPosition = new Vector3(_long, OneDimensionalPerlinNoiseGenerator.GetSubPerlinValue(_seed, endXPos, _scale, _persistence, _lacunarity, _drawSubPerlinNoiseIndex)) + transform.position;
         Gizmos.DrawLine(positions[positions.Length - 1], endPosition);
     }
 
 
     private void OnValidate()
     {
-        if (_scale < 0.01f) _scale = 0.01f;
         if (_steps > 1000) _steps = 1000;
         if (_long <= 0) _long = 0;
     }
