@@ -6,6 +6,8 @@
 
 /Assets/AssetStoreTools*
 
+/Assets/Plugins/*
+
 # Visual Studio 2015 cache directory
 /.vs/
 
@@ -25,6 +27,7 @@ ExportedObj/
 *.pdb
 
 
+
 # Unity3D generated meta files
 *.pidb.meta
 
@@ -34,3 +37,4 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+*.meta
