@@ -25,12 +25,9 @@ public class TwoDimensionalPerlinNoiseDisplay : MonoBehaviour
     float _lacunarity = 3;      //这个数大小正负应该都行，但小于1会导致后续噪声越来越平坦，因为随机点距离越来越远了
 
     [SerializeField]
-    bool _drawPerlinNoise = true;
-
+    bool _evaluate = false;
     [SerializeField]
-    bool _drawSubPerlinNoise = false;       //绘制子柏林噪声，也就是计算总柏林噪声时计算的小噪声
-    [SerializeField]
-    int _drawSubPerlinNoiseIndex;           //绘制的子噪声的下标
+    AnimationCurve _curve;
     
 
 
@@ -60,7 +57,11 @@ public class TwoDimensionalPerlinNoiseDisplay : MonoBehaviour
         Color[] colorMap = new Color[width * height];
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
+            {
+                if (_evaluate)
+                    randomMap[x, y] = _curve.Evaluate(randomMap[x, y]);
                 colorMap[y * width + x] = Color.Lerp(Color.black, Color.white, randomMap[x, y]);
+            }
 
         Texture2D texture = new Texture2D(width, height);
         texture.filterMode = FilterMode.Bilinear;
