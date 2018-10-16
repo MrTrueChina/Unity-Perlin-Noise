@@ -26,16 +26,18 @@ public class TwoDimensionalPerlinNoiseDisplay : MonoBehaviour
 
     [SerializeField]
     bool _evaluate = false;
-    [SerializeField]
-    AnimationCurve _curve;
     
 
 
     public void GeneratePerlinNoise()
     {
         float[,] perlinMap = GetPerlinMap(_length, _length, _offset);
+
+        if (_evaluate)
+            perlinMap = BeautifyPerlinMap(perlinMap);
+
         Texture2D texture = GetTextureFromRandomMap(perlinMap);
-        _renderer.material.mainTexture = texture;
+        _renderer.sharedMaterial.mainTexture = texture;
     }
 
     float[,] GetPerlinMap(int width, int height, Vector2 offset)
@@ -58,8 +60,6 @@ public class TwoDimensionalPerlinNoiseDisplay : MonoBehaviour
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
             {
-                if (_evaluate)
-                    randomMap[x, y] = _curve.Evaluate(randomMap[x, y]);
                 colorMap[y * width + x] = Color.Lerp(Color.black, Color.white, randomMap[x, y]);
             }
 
@@ -72,29 +72,27 @@ public class TwoDimensionalPerlinNoiseDisplay : MonoBehaviour
         return texture;
     }
 
-    /*
-    void DrawSubPerlinNoise()
+
+
+    static float[,] BeautifyPerlinMap(float[,] map)
     {
-        Gizmos.color = Color.blue;
+        float min = float.MaxValue;
+        float max = float.MinValue;
 
-        Vector3[] positions = new Vector3[_steps];
-        for (int i = 0; i < _steps; i++)
+        foreach (float perlinValue in map)
         {
-
-            float originXPos = _long / _steps * i;
-            float perlinXPos = originXPos + _offset;
-            float perlinValue = OneDimensionalPerlinNoiseGenerator.GetSubPerlinValue(_seed, perlinXPos, _scale, _persistence, _lacunarity, _drawSubPerlinNoiseIndex);
-            positions[i] = new Vector3(originXPos, perlinValue, 0) + transform.position;
+            if (perlinValue < min)
+                min = perlinValue;
+            if (perlinValue > max)
+                max = perlinValue;
         }
 
-        for (int i = 0; i < positions.Length - 1; i++)
-            Gizmos.DrawLine(positions[i], positions[i + 1]);
+        for (int x = 0; x < map.GetLength(0); x++)
+            for (int y = 0; y < map.GetLength(1); y++)
+                map[x, y] = Mathf.InverseLerp(min, max, map[x, y]);
 
-        float endXPos = transform.position.x + _long;
-        Vector3 endPosition = new Vector3(_long, OneDimensionalPerlinNoiseGenerator.GetSubPerlinValue(_seed, endXPos, _scale, _persistence, _lacunarity, _drawSubPerlinNoiseIndex)) + transform.position;
-        Gizmos.DrawLine(positions[positions.Length - 1], endPosition);
+        return map;
     }
-    */
 
 
     private void OnValidate()
