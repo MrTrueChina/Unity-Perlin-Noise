@@ -16,7 +16,8 @@ public static class RandomNumber
     /*
      *  单参数，不适用于柏林噪声
      *  
-     *  测试场景用横向排列的点展示结果
+     *  测试场景用横向排列的点展示结果，用平均值线和平均数数字提示平均数
+     *  
      *  需要达到以下几点要求：
      *      1.种子变化要引起结果的变化，达不到这条图像上所有点排成横线
      *      2.不能出现镜像，表现为在某个值左右的点形成了镜像的图像，很容易穿帮
@@ -71,6 +72,23 @@ public static class RandomNumber
 
         return value;
     }
+
+
+
+    //三种子
+    public static float GetFloat(int seedA, int seedB, int seedC)
+    {
+        int valueA = (seedA * 1664972) * seedA + 1497513149;
+        int valueB = (seedB * 13344) * seedB - 1648713494;
+        int valueC = (seedC * 116498) * seedC + 164879715;
+
+        int value = (((seedA + 1654931) * valueA) + (seedB * (valueB - 16449823)) + ((seedC - 659873) * (valueC + 9871513))) + (valueA * valueB + 165478921) * (1987431 - valueC * valueB) * valueB * valueC;
+
+        return IntToZeroToOneFloat(value);
+    }
+
+
+
 
     static float IntToZeroToOneFloat(int intValue)
     {
