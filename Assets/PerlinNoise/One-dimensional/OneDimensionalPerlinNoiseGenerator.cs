@@ -59,18 +59,11 @@ public static class OneDimensionalPerlinNoiseGenerator
     {
         float xPos = originPos * scale;
 
-        return GetSinglePerlinValue(seed, xPos);
+        return DoGetSinglePerlinValue(seed, xPos);
     }
+    
 
-    /*
-     *  先解决单个值的
-     *  之后是单个线的
-     *  之后是多个线的
-     */
-
-    //public static float[] GetAPerlinLine(int seed, )
-
-    public static float GetSinglePerlinValue(int seed, float xPos)
+    static float DoGetSinglePerlinValue(int seed, float xPos)
     {
         int leftPos = Mathf.FloorToInt(xPos);                   //Mathf.FlooarToInt(float f)：向下找最近的int，如果float就是个int值则返回这个int
         int rightPos = leftPos + 1;

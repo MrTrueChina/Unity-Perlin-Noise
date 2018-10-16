@@ -82,9 +82,19 @@ public static class RandomNumber
         int valueB = (seedB * 13344) * seedB - 1648713494;
         int valueC = (seedC * 116498) * seedC + 164879715;
 
-        int value = (((seedA + 1654931) * valueA) + (seedB * (valueB - 16449823)) + ((seedC - 659873) * (valueC + 9871513))) + (valueA * valueB + 165478921) * (1987431 - valueC * valueB) * valueB * valueC;
+        int value = (((seedA + 1654931) * valueA) + (seedB * (valueB - 16449823)) + ((seedC - 659873) * (valueC + 9871513))) + (valueA * valueB + 165478921) * (1987431 - valueC * valueB) * valueB * valueC + 16887423;
 
         return IntToZeroToOneFloat(value);
+    }
+    public static int GetInt(int seedA, int seedB, int seedC)
+    {
+        int valueA = (seedA * 1664972) * seedA + 1497513149;
+        int valueB = (seedB * 13344) * seedB - 1648713494;
+        int valueC = (seedC * 116498) * seedC + 164879715;
+
+        int value = (((seedA + 1654931) * valueA) + (seedB * (valueB - 16449823)) + ((seedC - 659873) * (valueC + 9871513))) + (valueA * valueB + 165478921) * (1987431 - valueC * valueB) * valueB * valueC;
+
+        return value;
     }
 
 

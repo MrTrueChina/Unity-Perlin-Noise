@@ -227,8 +227,8 @@ MonoBehaviour:
   _XYAverageText: {fileID: 1529544101}
   _YZAverageText: {fileID: 1271607047}
   _XZAverageText: {fileID: 951828700}
-  _length: 150
-  _offset: {x: 168, y: -351, z: 1039}
+  _length: 100
+  _offset: {x: 1845, y: -280, z: 819}
 --- !u!4 &305599550
 Transform:
   m_ObjectHideFlags: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.4995887
+  m_Text: 0.4971314
 --- !u!222 &951828701
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -617,7 +617,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.4965591
+  m_Text: 0.4993032
 --- !u!222 &1271607048
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -777,7 +777,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.4977109
+  m_Text: 0.4990039
 --- !u!222 &1529544102
 CanvasRenderer:
   m_ObjectHideFlags: 0

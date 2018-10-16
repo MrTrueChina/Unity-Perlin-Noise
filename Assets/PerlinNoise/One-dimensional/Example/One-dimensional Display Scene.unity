@@ -1044,7 +1044,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e7797a0e96755d3489b5aadebe2793eb, type: 2}
+  - {fileID: 2100000, guid: 8ad79cbcf9a07564794fcd76794d8f0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1135,7 +1135,7 @@ MonoBehaviour:
   _lacunarity: 3.5
   _drawPerlinNoise: 1
   _drawSubPerlinNoise: 0
-  _drawSubPerlinNoiseIndex: 3
+  _drawSubPerlinNoiseIndex: 1
 --- !u!4 &1961718105
 Transform:
   m_ObjectHideFlags: 0
