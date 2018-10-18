@@ -177,13 +177,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1327745351}
-  _seed: 0
-  _length: 300
-  _offset: {x: -100, y: -100}
-  _scale: 10
+  _seed: 2233
+  _length: 100
+  _offset: {x: 0, y: 0}
+  _scale: 5
   _octaves: 3
-  _persistence: 0.35
-  _lacunarity: 3
+  _persistence: 0.3
+  _lacunarity: 3.5
   _evaluate: 1
 --- !u!33 &1327745353
 MeshFilter:

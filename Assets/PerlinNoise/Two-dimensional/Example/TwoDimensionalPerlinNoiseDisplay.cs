@@ -59,9 +59,8 @@ public class TwoDimensionalPerlinNoiseDisplay : MonoBehaviour
         Color[] colorMap = new Color[width * height];
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
-            {
                 colorMap[y * width + x] = Color.Lerp(Color.black, Color.white, randomMap[x, y]);
-            }
+                //colorMap[y * width + x] = randomMap[x, y] < 0.5f ? Color.black : Color.white;
 
         Texture2D texture = new Texture2D(width, height);
         texture.filterMode = FilterMode.Bilinear;
