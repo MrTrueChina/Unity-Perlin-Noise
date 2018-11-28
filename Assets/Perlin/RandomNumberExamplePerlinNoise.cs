@@ -103,7 +103,7 @@ public static class RandomNumberExamplePerlinNoise
 
     static int Floor(float f)       //直接返回int的Floor方法，用Unity的Floor或C#的Floor也是一样效果，但那样都需要多一次调用，会多消耗计算量，柏林噪声这种高消耗算法不能做这种无意义浪费
     {
-        return f > 0 ? (int)f : (int)f - 1;
+        return f >= 0 ? (int)f : (int)f - 1;
     }
 
     static float Lerp(float a, float b, float t)    //Lerp也是为了节约计算量手写一个

@@ -27,7 +27,7 @@ public class FloorTiIntSpeedTest
 
     int IfElseFloor(float f)
     {
-        if (f > 0)
+        if (f >= 0)
             return (int)f;
         else
             return (int)f - 1;
@@ -36,7 +36,7 @@ public class FloorTiIntSpeedTest
 
     int ThreeFloor(float f)
     {
-        return f > 0 ? (int)f : (int)f - 1;
+        return f >= 0 ? (int)f : (int)f - 1;
     }
 
 
@@ -45,10 +45,10 @@ public class FloorTiIntSpeedTest
         System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
         timer.Start();
         for (int i = 0; i < _loopTime; i++)
-            if (_origin > 0)
+            if (_origin >= 0)
                 _container = (int)_origin;
             else
-                _container = (int)_origin + 1;
+                _container = (int)_origin - 1;
         timer.Stop();
         return timer.ElapsedMilliseconds;
     }
@@ -59,8 +59,7 @@ public class FloorTiIntSpeedTest
         System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
         timer.Start();
         for (int i = 0; i < _loopTime; i++)
-            if (_origin > 0)
-                _container = _origin > 0 ? (int)_origin : (int)_origin + 1;
+            _container = _origin >= 0 ? (int)_origin : (int)_origin - 1;
         timer.Stop();
         return timer.ElapsedMilliseconds;
     }
