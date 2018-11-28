@@ -1,17 +1,10 @@
-﻿/*
- *  用来显示单参数随机数生成方法的显示脚本，主要拿来测试算法了（如果乱算数也是算法的话）
- */
-
-/*
- *  给随机数发生器的新朋友
- */
-
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class SingleParameterRandomNumberDisplay : MonoBehaviour
 {
+    [SerializeField]
+    Renderer _renderer;
     [SerializeField]
     Text _averageText;
 
@@ -20,48 +13,43 @@ public class SingleParameterRandomNumberDisplay : MonoBehaviour
     [SerializeField]
     int _length = 100;      //总共生成的随机数数量
     [SerializeField]
-    float _scale = 10;      //这个是为了方便观察
+    int _step = 1;         //每一步前进几个种子
 
 
-    private void OnDrawGizmos()
+    public void Generate()
     {
-        DrawHalfLine();
+        System.Random random = new System.Random(_startSeed);
+        float[,] randomMap = new float[_length, _length];
+        for (int x = 0; x < _length; x++)
+            for (int y = 0; y < _length; y++)
+                randomMap[x, y] = (RandomNumber.GetInt(x + y * _length) * _step + _startSeed) % 2;
+                //randomMap[x, y] = random.Next() % 2 / 1f;
 
-        DrawSingleSeed();
+        Color[] colorMap = new Color[_length * _length];
+        for (int x = 0; x < _length; x++)
+            for (int y = 0; y < _length; y++)
+                colorMap[x + y * _length] = Color.Lerp(Color.black, Color.white, randomMap[x, y]);
+
+        Texture2D texture = new Texture2D(_length, _length);
+        texture.filterMode = FilterMode.Point;
+        texture.wrapMode = TextureWrapMode.Clamp;
+        texture.SetPixels(colorMap);
+        texture.Apply();
+
+        _renderer.sharedMaterial.mainTexture = texture;
+
+        float average = 0;
+        foreach (float value in randomMap)
+            average += value;
+        _averageText.text = (average / _length / _length).ToString();
     }
-
-
-    void DrawHalfLine()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(0, 0.5f, 0), new Vector3(_length / _scale, 0.5f, 0));
-    }
-
-    void DrawSingleSeed()
-    {
-        Gizmos.color = Color.gray;
-
-        float num = 0;
-
-        for (int i = 0; i < _length; i++)
-        {
-            float randomValue = RandomNumber.GetFloat(_startSeed + i);
-            Vector3 position = new Vector3(i / _scale, randomValue, 0);
-            Gizmos.DrawSphere(position, 0.01f);
-
-            num += randomValue;
-        }
-
-        num /= _length;
-        Gizmos.DrawLine(new Vector3(0, num, 0), new Vector3(_length / _scale, num, 0));
-        _averageText.text = num.ToString();
-    }
-
 
 
     private void OnValidate()
     {
-        if (_length > 1000) _length = 1000;
-        if (_scale < 0.01f) _scale = 0.01f;
+        _length = Mathf.Clamp(_length, 1, 1000);
+
+        if (_renderer != null && _averageText != null)
+            Generate();
     }
 }

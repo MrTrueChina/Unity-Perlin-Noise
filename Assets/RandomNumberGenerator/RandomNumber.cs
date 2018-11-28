@@ -27,7 +27,34 @@ public static class RandomNumber
      *  
      *  计算和常数随便写，主要是对着图像改，一直改到满足上面的要求为止，结果就是这样了
      */
+    /// <summary>
+    /// return [ minValue , maxValue )
+    /// </summary>
+    public static float GetRange(int seed, float minValue, float maxValue)
+    {
+        return GetFloat(seed) * (maxValue - minValue) + minValue;
+    }
+
+    /// <summary>
+    /// return [ minValue , maxValue - 1 ]
+    /// </summary>
+    public static int GetRange(int seed, int minValue, int maxValue)
+    {
+        return GetInt(seed) * (maxValue - minValue) + minValue;
+    }
+
+    /// <summary>
+    /// return [ 0 , 1 ]
+    /// </summary>
     public static float GetFloat(int seed)
+    {
+        return (float)GetInt(seed) / int.MaxValue;
+    }
+
+    /// <summary>
+    /// return [ 0 , int.maxValue ]
+    /// </summary>
+    public static int GetInt(int seed)
     {
         int value = seed * 2233681 ^ seed;
         /*
@@ -36,10 +63,12 @@ public static class RandomNumber
          *      2.只靠种子一个值产生看似无规律的随机数也很困难，这里计算出第二个值后面计算轻松点
          */
 
-        value = (value * (value - 155786) ^ seed) * (value * 1679542) + 736779151;      //这一步计算很明显会超出int的最大值，但要的就是这个效果，int超过最大值会溢出成负数，最大化利用int空间
+        value = (value * (value - 155785) ^ seed) * (value * 1679541) + 736779150;      //这一步计算很明显会超出int的最大值，但要的就是这个效果，int超过最大值会溢出成负数，最大化利用int空间
 
-        return IntToZeroToOneFloat(value);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+        return value & int.MaxValue;
     }
+
+
 
     /*
      *  双种子，适用于1维柏林噪声的随机数发生器
@@ -53,16 +82,24 @@ public static class RandomNumber
      *  
      *  各种常数和计算都是乱写 + 对着图像修修改改弄出来的，主要是修改
      */
+    /// <summary>
+    /// 
+    /// </summary>
+    public static float GetRange(int seedA, int seedB, float minValue, float maxValue)
+    {
+        return GetFloat(seedA, seedB) % (maxValue - minValue) + minValue;
+    }
+
+    public static int GetRange(int seedA, int seedB, int minValue, int maxValue)
+    {
+        return GetInt(seedA, seedB) % (maxValue - minValue) + minValue;
+    }
+
     public static float GetFloat(int seedA, int seedB)
     {
-        int valueA = (seedA * 16579324) * seedA - 1359874;
-        int valueB = (seedB * 165972) * seedB - 459823;
-
-        int value = (((seedA + 1322997815) * (seedB - 213549494)) * (valueA - 46218954) * valueA * valueB) + (((seedA - 14675237) * (seedB + 213746794)) * (valueB - 474331954) * valueA * valueB);
-
-        return IntToZeroToOneFloat(value);
+        return (float)GetInt(seedA, seedB) / int.MaxValue;
     }
-    
+
     public static int GetInt(int seedA, int seedB)
     {
         int valueA = (seedA * 16579324) * seedA - 1359874;
@@ -70,22 +107,40 @@ public static class RandomNumber
 
         int value = (((seedA + 1322997815) * (seedB - 213549494)) * (valueA - 46218954) * valueA * valueB) + (((seedA - 14675237) * (seedB + 213746794)) * (valueB - 474331954) * valueA * valueB);
 
-        return value;
+        return value & int.MaxValue;
     }
 
 
 
     //三种子
+    /// <summary>
+    /// return [ minValue , maxValue )
+    /// </summary>
+    public static float GetRange(int seedA, int seedB, int seedC, float minValue, float maxValue)
+    {
+        return GetFloat(seedA, seedB, seedC) % (maxValue - minValue) + minValue;
+    }
+
+    /// <summary>
+    /// return [ minValue , maxValue - 1 ]
+    /// </summary>
+    public static int GetRange(int seedA, int seedB, int seedC, int minValue, int maxValue)
+    {
+        //return GetInt(seedA, seedB, seedC) / (int.MaxValue / (maxValue - minValue)) + minValue;
+        return GetInt(seedA, seedB, seedC) % (maxValue - minValue) + minValue;
+    }
+
+    /// <summary>
+    /// return [ 0 , 1 ]
+    /// </summary>
     public static float GetFloat(int seedA, int seedB, int seedC)
     {
-        int valueA = (seedA * 1664972) * seedA + 1497513149;
-        int valueB = (seedB * 13344) * seedB - 1648713494;
-        int valueC = (seedC * 116498) * seedC + 164879715;
-
-        int value = (((seedA + 1654931) * valueA) + (seedB * (valueB - 16449823)) + ((seedC - 659873) * (valueC + 9871513))) + (valueA * valueB + 165478921) * (1987431 - valueC * valueB) * valueB * valueC + 16887423;
-
-        return IntToZeroToOneFloat(value);
+        return (float)GetInt(seedA, seedB, seedC) / int.MaxValue;
     }
+
+    /// <summary>
+    /// return [ 0 , int.maxValue ]
+    /// </summary>
     public static int GetInt(int seedA, int seedB, int seedC)
     {
         int valueA = (seedA * 1664972) * seedA + 1497513149;
@@ -94,14 +149,16 @@ public static class RandomNumber
 
         int value = (((seedA + 1654931) * valueA) + (seedB * (valueB - 16449823)) + ((seedC - 659873) * (valueC + 9871513))) + (valueA * valueB + 165478921) * (1987431 - valueC * valueB) * valueB * valueC;
 
-        return value;
+        return value & int.MaxValue;
     }
 
 
-
-
-    static float IntToZeroToOneFloat(int intValue)
+    static int Normalize(int i, int minValue, int maxValue)
     {
-        return (float)(intValue & int.MaxValue) / int.MaxValue;
+        return i % (maxValue - minValue) + minValue;
+    }
+    static float Normalize(float f, float minValue, float maxValue)
+    {
+        return f % (maxValue - minValue) + minValue;
     }
 }

@@ -34,6 +34,7 @@ public class OneDimensionalPerlinNoiseDisplay : MonoBehaviour
     {
         if (_drawPerlinNoise) DrawPerlinNoise();
         if (_drawSubPerlinNoise) DrawSubPerlinNoise();
+        DrawMathfPrelinNiose();
     }
 
     void DrawPerlinNoise()
@@ -77,6 +78,24 @@ public class OneDimensionalPerlinNoiseDisplay : MonoBehaviour
         float endXPos = transform.position.x + _long;
         Vector3 endPosition = new Vector3(_long, OneDimensionalPerlinNoiseGenerator.GetSubPerlinValue(_seed, endXPos, _scale, _persistence, _lacunarity, _drawSubPerlinNoiseIndex)) + transform.position;
         Gizmos.DrawLine(positions[positions.Length - 1], endPosition);
+    }
+
+    void DrawMathfPrelinNiose()
+    {
+
+        Gizmos.color = Color.green;
+
+        Vector3[] positions = new Vector3[_steps];
+        for (int i = 0; i < _steps; i++)
+        {
+            float originXPos = _long / _steps * i * _scale / 2;
+            float perlinXPos = originXPos + _offset;
+            float perlinValue = Mathf.PerlinNoise(perlinXPos, _seed);
+            positions[i] = new Vector3(originXPos / _scale * 2, perlinValue, 0) + transform.position;
+        }
+
+        for (int i = 0; i < positions.Length - 1; i++)
+            Gizmos.DrawLine(positions[i], positions[i + 1]);
     }
 
 
