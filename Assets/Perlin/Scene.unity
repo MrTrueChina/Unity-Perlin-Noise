@@ -432,7 +432,6 @@ MonoBehaviour:
   _offset: {x: -10, y: -10}
   _filterMode: 1
   _speed: 0.5
-  _eight: 0
 --- !u!1 &1265305582
 GameObject:
   m_ObjectHideFlags: 0

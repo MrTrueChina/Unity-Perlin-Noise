@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PerlinDisplay : MonoBehaviour
+public class RandomNumberPerlinDisplay : MonoBehaviour
 {
     new Renderer renderer
     {
