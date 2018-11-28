@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
+using UnityEngine;
 
-[CustomEditor(typeof(RandomNumberPerlinDisplay))]
+[CustomEditor(typeof(RandomNumberExamplePerlinDisplay))]
 public class PerlinDisplayEditor : Editor
 {
     public override void OnInspectorGUI()
@@ -9,6 +9,6 @@ public class PerlinDisplayEditor : Editor
         DrawDefaultInspector();
 
         if (GUILayout.Button("Generate"))
-            ((RandomNumberPerlinDisplay)target).Genarete();
+            ((RandomNumberExamplePerlinDisplay)target).Genarete();
     }
 }

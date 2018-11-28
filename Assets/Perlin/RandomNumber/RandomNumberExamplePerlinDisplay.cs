@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RandomNumberPerlinDisplay : MonoBehaviour
+public class RandomNumberExamplePerlinDisplay : MonoBehaviour
 {
     new Renderer renderer
     {
@@ -50,8 +50,7 @@ public class RandomNumberPerlinDisplay : MonoBehaviour
         float[,] noiseMap = new float[_sideLength, _sideLength];
         for (int x = 0; x < _sideLength; x++)
             for (int y = 0; y < _sideLength; y++)
-                noiseMap[x, y] = RandomNumberPerlinNoise.GetPerlinValue(x / _scale + _offset.x, y / _scale + _offset.y, _seed + _speed * time, _octaves, _persistence, _lacunarity);
-                //noiseMap[x, y] = PerlinRandom.GetInt((int)(x / _scale + _offset.x), (int)(y / _scale + _offset.y), (int)(_seed + _speed * time), 0, 8) / 7f;
+                noiseMap[x, y] = RandomNumberExamplePerlinNoise.GetPerlinValue(x / _scale + _offset.x, y / _scale + _offset.y, _seed + _speed * time, _octaves, _persistence, _lacunarity);
 
         Color[] colorMap = new Color[_sideLength * _sideLength];
         for (int x = 0; x < _sideLength; x++)
@@ -65,11 +64,6 @@ public class RandomNumberPerlinDisplay : MonoBehaviour
         texture.Apply();
 
         renderer.sharedMaterial.mainTexture = texture;
-
-        //float a = 0;
-        //foreach (float f in noiseMap)
-        //    a += f;
-        //Debug.Log(a / _sideLength / _sideLength);
     }
 
 
