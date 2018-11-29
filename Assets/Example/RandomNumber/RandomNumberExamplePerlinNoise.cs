@@ -98,7 +98,7 @@ public static class RandomNumberExamplePerlinNoise
     static int GetRandomInt(int x, int y, int z, int min, int max)
     {
         int value = (x + 1111111111) * (y - 333333333) * (z + 555555555) * (x + y + 777777777) * (x + z - 999999999) * (z - y + 233333333); //数写多少不重要，重要的是【够大】，要【看起来无规律的】【均匀的】按照xyz算出int值
-        value = value & int.MaxValue - 1;       //用与运算限制范围在 0 - (int.MaxValue - 1)，-1是因为如果这一步达到了int最大值下一步就会返回最大值参数，设计上是不应该返回最大值的
+        value = value & (int.MaxValue - 1);       //用与运算限制范围在 0 - (int.MaxValue - 1)，-1是因为如果这一步达到了int最大值下一步就会返回最大值参数，设计上是不应该返回最大值的，这样有一个缺点是导致只会出双数，不过因为下一步等比例压缩就不重要了
         return (int)((max - min) * (float)value / int.MaxValue + min);  //将随机数等比例缩小到参数设置的范围，之后返回
     }
 
