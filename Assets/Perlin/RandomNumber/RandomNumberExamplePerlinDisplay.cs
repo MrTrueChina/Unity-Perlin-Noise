@@ -14,9 +14,7 @@ public class RandomNumberExamplePerlinDisplay : MonoBehaviour
         }
     }
     Renderer _renderer;
-
-    [SerializeField]
-    float _seed;
+    
     [SerializeField]
     int _sideLength;
     [SerializeField]
@@ -29,7 +27,7 @@ public class RandomNumberExamplePerlinDisplay : MonoBehaviour
     [SerializeField]
     float _scale;
     [SerializeField]
-    Vector2 _offset;
+    Vector3 _offset;
 
     [SerializeField]
     FilterMode _filterMode;
@@ -50,7 +48,7 @@ public class RandomNumberExamplePerlinDisplay : MonoBehaviour
         float[,] noiseMap = new float[_sideLength, _sideLength];
         for (int x = 0; x < _sideLength; x++)
             for (int y = 0; y < _sideLength; y++)
-                noiseMap[x, y] = RandomNumberExamplePerlinNoise.GetPerlinValue(x / _scale + _offset.x, y / _scale + _offset.y, _seed + _speed * time, _octaves, _persistence, _lacunarity);
+                noiseMap[x, y] = RandomNumberExamplePerlinNoise.GetPerlinValue(x / _scale + _offset.x, y / _scale + _offset.y, _offset.z + _speed * time, _octaves, _persistence, _lacunarity);
 
         Color[] colorMap = new Color[_sideLength * _sideLength];
         for (int x = 0; x < _sideLength; x++)
