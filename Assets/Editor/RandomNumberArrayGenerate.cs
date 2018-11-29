@@ -1,10 +1,10 @@
 ﻿/*
- *  随机数列生成器，在 Test Runner 面板执行后会输出 0-_length-1 的不重复随机数列
+ *  随机数列生成器，在 Test Runner 面板执行后会输出 0 - (_length-1) 的不重复随机数列
  */
 
 using System.Collections.Generic;
-using UnityEngine;
 using NUnit.Framework;
+using UnityEngine;
 
 [TestFixture]
 public class RandomNumberArrayGenerate

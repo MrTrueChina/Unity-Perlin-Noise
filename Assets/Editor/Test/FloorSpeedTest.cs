@@ -14,8 +14,8 @@ public class FloorTiIntSpeedTest
     public void FloorSpeed()
     {
         Debug.Log("Loop " + _loopTime + " Time");
-        Debug.Log("(int)Mathf.Floor：             |" + GetMethodTime((f) => (int)Mathf.Floor(f)) + " | _container = " + _container);
-        Debug.Log("(int)System.Math.Floor     |" + GetMethodTime((f) => (int)Math.Floor(f)) + " | _container = " + _container);
+        Debug.Log("(int)Mathf.Floor：             |" + GetMethodTime(f => (int)Mathf.Floor(f)) + " | _container = " + _container);
+        Debug.Log("(int)System.Math.Floor     |" + GetMethodTime(f => (int)Math.Floor(f)) + " | _container = " + _container);
         Debug.Log("if else Floor                     |" + GetMethodTime(IfElseFloor) + " | _container = " + _container);
         Debug.Log("?: Floor                           |" + GetMethodTime(ThreeFloor) + " | _container = " + _container);
         Debug.Log("Inline if else Floor            |" + InlineIfElseFloor() + " | _container = " + _container);

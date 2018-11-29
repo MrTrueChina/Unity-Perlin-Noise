@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [CustomEditor(typeof(RandomNumberExamplePerlinDisplay))]
-public class PerlinDisplayEditor : Editor
+public class RandomNumberExamplePerlinDisplayEditor : Editor
 {
     public override void OnInspectorGUI()
     {

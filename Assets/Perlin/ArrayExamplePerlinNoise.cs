@@ -42,31 +42,18 @@ public static class ArrayExamplePerlinNoise
  
     static float Perlin(float x, float y, float z)
     {
-        //UnityEngine.Debug.Log("y = " + y);
-        //if (y < 0)
-            //UnityEngine.Debug.Log("-y % 64 = " + (-y % 64));
-            //UnityEngine.Debug.Log("64 - (-y % 64) = " + (64 - (-y % 64)));
-            //UnityEngine.Debug.Log("(64 - (-y % 64)) % 64 = " + ((64 - (-y % 64)) % 64));
         //转化坐标到随机数循环长度内，这个柏林噪声是 0-64
-        //  0的时候是0  ->  if(x == 0)  x = x
-        // 64的时候是0  ->  if(x > 0)   x = x % 64
-        //-64的时候是0  ->  if(x < 0)   x = -x % 64
-        //不能镜像      ->  if(x < 0)   x = (64 - (-x % 64)) % 64
         x = x >= 0 ? x % 64 : (64 - (-x % 64)) % 64;
-        if (x == 64) x = 0;
+        if (x == 64) x = 0;                         //不用第二次取余的原因是：如果x在上一步计算后数值是 63.99999... 这种趋近于64的值，则取余不会把他视为64而取到0，但其他地方则把它视为64，进而在计算时导致数组下标越界
         y = y >= 0 ? y % 64 : 64 - (-y % 64);
         if (y == 64) y = 0;
         z = z >= 0 ? z % 64 : (64 - (-z % 64)) % 64;
         if (z == 64) z = 0;
-        //UnityEngine.Debug.Log("y = " + y);
-        //UnityEngine.Debug.Log("z = " + z);
 
         //取整数，确认在哪个随机数区域里
         int intgerX = Floor(x);
         int intgerY = Floor(y);
         int intgerZ = Floor(z);
-        //UnityEngine.Debug.Log("intgerX = " + intgerX);
-        //UnityEngine.Debug.Log("intgerY = " + intgerY);
 
         //取小数，确认在随机数区域内的位置
         float decimalX = x - intgerX;
@@ -108,8 +95,7 @@ public static class ArrayExamplePerlinNoise
     //计算一个顶点对最终柏林噪声值的影响值，前三个参数是这个订单的坐标，后三个参数是顶点到柏林噪声取值点的距离向量
     static float Gradient(int randomKey, float x, float y, float z)
     {
-        //UnityEngine.Debug.Log(randomKey % 12);
-        switch (randomKey % 12)    //根据随机数选择从中心到十二个边的十二个向量中的一个，并用这个向量和后三个参数组成的距离向量求点积，12边向量比8角向量快，噪声图形更接近网格
+        switch (randomKey % 12)    //根据随机数选择从中心到12个边的12个向量中的一个，并用这个向量和后三个参数组成的距离向量求点积
         {
             case 0:  return  y + z;   //( 0, 1, 1)
             case 1:  return  y - z;   //( 0, 1,-1)
@@ -123,11 +109,10 @@ public static class ArrayExamplePerlinNoise
             case 9:  return  x - y;   //( 1,-1, 0)
             case 10: return -x + y;   //(-1, 1, 0)
             case 11: return -x - y;   //(-1,-1, 0)
-            default:
-                //UnityEngine.Debug.LogError(randomKey % 12);
-                return 0;  //正常情况下不会执行到这一步
+            default: return 0;  //正常情况下不会执行到这一步
         }
-        //完全随机角向量成本太高，这里用了从中心指向八个角的向量，喜欢的话也可以换成指向12个边的、指向6个面的，或者斜着的，只要保证总和是均匀指向周围的就行
+        //完全随机角向量成本太高，这里用了从中心指向12个边的向量，喜欢的话也可以换成指向8个角的、指向6个面的，或者斜着的，只要保证总和是均匀指向周围的就行
+        //不同的随机角度运行速度、占用资源、最终图像都不尽相同，如果想要获取更好的效果可以尝试修改随机向量
     }
 
     static int Floor(float f)       //直接返回int的Floor方法，用Unity的Floor或C#的Floor也是一样效果，但那样都需要多一次调用，会多消耗计算量，柏林噪声这种高消耗算法不能做这种无意义浪费

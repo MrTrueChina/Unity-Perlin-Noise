@@ -92,6 +92,7 @@ public static class RandomNumberExamplePerlinNoise
             default: return 0;  //正常情况下不会执行到这一步
         }
         //完全随机角向量成本太高，这里用了从中心指向八个角的向量，喜欢的话也可以换成指向12个边的、指向6个面的，或者斜着的，只要保证总和是均匀指向周围的就行
+        //不同的随机角度运行速度、占用资源、最终图像都不尽相同，如果想要获取更好的效果可以尝试修改随机向量
     }
 
     static int GetRandomInt(int x, int y, int z, int min, int max)

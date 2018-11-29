@@ -529,7 +529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sideLength: 100
-  _octaves: 5
+  _octaves: 7
   _persistence: 0.5
   _lacunarity: 2
   _scale: 20
